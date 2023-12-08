@@ -24,7 +24,7 @@ export async function SignInButton({ large }: { large?: boolean }) {
 
   return (
     <Button asChild size={large ? "3" : "2"}>
-      <a href={authorizationUrl}>Sign In {large && "with AuthKit"}</a>
+      <a href={authorizationUrl}>Sign In</a>
     </Button>
   );
 }

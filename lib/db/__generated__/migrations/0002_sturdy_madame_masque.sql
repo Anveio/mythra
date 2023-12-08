@@ -1,0 +1,1 @@
+ALTER TABLE `users` MODIFY COLUMN `public_id` varchar(6) NOT NULL;
