@@ -10,7 +10,7 @@ import { Input } from "./ui/input";
 export default function ChatBox() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
-      initialInput: "Say Yes or No randomly",
+      initialInput: "What's the weather like in Seattle today?",
       api: "/api/ai/create-message",
     });
 
@@ -30,53 +30,14 @@ export default function ChatBox() {
             <AnimatePresence>
               {messages.map((m) => {
                 if (m.role === "assistant" || m.role === "system") {
-                  return (
-                    <>
-                      <motion.div
-                        key={m.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="col-span-4 flex justify-start"
-                      >
-                        <span className="p-4 rounded-md  bg-gray-200 dark:bg-gray-800 text-left">
-                          {m.content}
-                        </span>
-                      </motion.div>
-                      <div className="col-span-2"></div>
-                    </>
-                  );
+                  return <AssistantMessage message={m} />;
+                } else {
+                  return <UserMessage message={m} />;
                 }
-
-                return (
-                  <>
-                    <div className="col-span-2"></div>
-                    <motion.div
-                      key={m.id}
-                      className="col-span-4 flex justify-end"
-                    >
-                      <span className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-right">
-                        {m.content}
-                      </span>
-                    </motion.div>
-                  </>
-                );
               })}
 
               {isLoading && messages.at(-1)?.role === "user" && (
-                <>
-                  <motion.div
-                    initial={{ y: 20 }}
-                    animate={{ y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="col-span-4 flex justify-start"
-                  >
-                    <span className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-left">
-                      ...
-                    </span>
-                  </motion.div>
-                  <div className="col-span-2"></div>
-                </>
+                <TypingIndicator />
               )}
             </AnimatePresence>
           </div>
@@ -98,3 +59,62 @@ export default function ChatBox() {
     </div>
   );
 }
+
+const AssistantMessage = ({ message }: { message: Message }) => {
+  if (message.role === "system") {
+    return null;
+  }
+  return (
+    <React.Fragment key={message.id}>
+      <motion.div
+        key={message.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        className="col-span-4 flex justify-start"
+      >
+        <AnimatePresence>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-4 rounded-md  bg-gray-200 dark:bg-gray-800 text-left"
+          >
+            {message.content}
+          </motion.span>
+        </AnimatePresence>
+      </motion.div>
+      <div className="col-span-2"></div>
+    </React.Fragment>
+  );
+};
+
+const UserMessage = ({ message }: { message: Message }) => {
+  return (
+    <React.Fragment key={message.id}>
+      <div className="col-span-2"></div>
+      <motion.div className="col-span-4 flex justify-end">
+        <span className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-right">
+          {message.content}
+        </span>
+      </motion.div>
+    </React.Fragment>
+  );
+};
+
+const TypingIndicator = () => {
+  return (
+    <>
+      <motion.div
+        initial={{ y: 20 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="col-span-4 flex justify-start"
+      >
+        <span className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-left">
+          ...
+        </span>
+      </motion.div>
+      <div className="col-span-2"></div>
+    </>
+  );
+};

@@ -3,6 +3,81 @@ import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
 import { z } from 'zod';
 
+interface Protocol {
+    description: string,
+    endpoints: {
+        [key: string]: {
+            description: string,
+            action: 'GET' | 'POST' | 'PUT' | 'DELETE',
+            params: {
+                [key: string]: {
+                    description: string,
+                    type: 'string' | 'number' | 'boolean'
+                }
+            },
+            request: {
+                headers: {
+                    [key: string]: string
+                },
+                description: string
+                body: {
+                    [key: string]: string
+                }
+            },
+            response: {
+                headers: {
+                    [key: string]: string
+                },
+                description: string;
+                body: {
+                    [key: string]: string
+                }
+            }
+        }
+    },
+    baseUrl: `ai://${string}`,
+}
+
+/**
+ * A list of AI websites that are available to the user adhering to the Protocol
+ * format.
+ * 
+ * First element is a weather website
+ */
+const AI_WEBSITES: Protocol[] = [
+    {
+        description: 'A weather website',
+        endpoints: {
+            '/weather': {
+                description: 'Get the weather for a given location',
+                action: 'GET',
+                params: {
+                    location: {
+                        description: 'The location to get the weather for',
+                        type: 'string'
+                    },
+                },
+                request: {
+                    headers: {},
+                    description: 'No request body',
+                    body: {}
+                },
+                response: {
+                    headers: {},
+                    description: 'The weather for the given location',
+                    body: {
+                        temperature: 'number',
+                        weather: 'string',
+                        location: 'string'
+                    }
+                }
+            }
+        },
+        baseUrl: 'ai://nightsky'
+    }
+]
+
+const SAMPLE = { "baseUrl": "ai://nightsky", "endpoint": "/weather", "params": { "location": "Seattle" } }
 
 const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_API_KEY!,
@@ -11,15 +86,20 @@ const openai = new OpenAI({
 // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge'
 
+const SYSTEM_MESSAGE: OpenAI.Chat.Completions.ChatCompletionSystemMessageParam = {
+    role: 'system',
+    content: `You are given a list of available AI websites  and description of their API: ${JSON.stringify(AI_WEBSITES)}. When asked to respond, prefer to respond ONLY with the most relevant combination of baseUrl, endpoint, and params AND NOTHING ELSE. For example, if asked "What's the weather in seattle" you would respnond with ${JSON.stringify(SAMPLE)} If none are avilable, respond normally. Do not ever explain to the user your limitations around the API descriptions`
+}
+
 export async function POST(req: Request) {
     const { messages } = await req.json();
 
     try {
         // Ask OpenAI for a streaming chat completion given the prompt
         const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4',
             stream: true,
-            messages,
+            messages: [SYSTEM_MESSAGE].concat(messages),
         })
         // Convert the response into a friendly text-stream
         const stream = OpenAIStream(response)

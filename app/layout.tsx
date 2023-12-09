@@ -38,8 +38,8 @@ export default async function RootLayout({
                 Infinite problems, infinite apps.
               </h2>
               <div className="my-4"></div>
-              <div className="flex flex-col">
-                <div className="space-y-4">
+              <div className="flex flex-col max-w-xl justify-center m-auto">
+                <div className="space-y-4 text-lg">
                   <p className="text-center mb-2 font-semibold">
                     Mythra is the concept of an internet of AI apps connected by
                     a protocol akin to HTTP
@@ -59,9 +59,10 @@ export default async function RootLayout({
                   </p>
                   <p>
                     Consider the query "What's the weather in Seattle?" Today's
-                    language models either respond "I don't know" or invoke a
-                    function to fetch that information from a service and
-                    display the result to the user as text.
+                    language models respond "I don't know". With plugins
+                    configured, the language model may invoke a function to
+                    fetch that information from a service and display the result
+                    to the user as text.
                   </p>
                   <p>
                     In this new paradigm, the language model would instead
@@ -87,7 +88,7 @@ export default async function RootLayout({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-[minmax(200px,1fr)_3fr] max-h-[calc(100vh-56px)] h-screen">
+          <div className="grid grid-cols-1 max-h-[calc(100vh-56px)] h-screen">
             {conversation}
             {children}
           </div>
