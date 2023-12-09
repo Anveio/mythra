@@ -6,18 +6,35 @@ import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { z } from "zod";
+import { WeatherWidget } from "./WeatherWidget";
 
 export default function ChatBox() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       initialInput: "What's the weather like in Seattle today?",
       api: "/api/ai/create-message",
+      initialMessages: [
+        {
+          content: "What's the weather like in Seattle today?",
+          role: "user",
+          createdAt: new Date("2023-12-09T22:27:53.467Z"),
+          id: "MYykhXT",
+        },
+        {
+          id: "0pL1UNu",
+          createdAt: new Date("2023-12-09T22:28:53.467Z"),
+          content:
+            '{"baseUrl":"ai://nightsky","endpoint":"/weather","params":{"city":"Seattle"}}',
+          role: "assistant",
+        },
+      ],
     });
 
   console.log(messages);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className="relative flex-1">
         {messages.length === 0 && !isLoading ? (
           <div className="flex flex-col h-full items-center justify-center">
@@ -64,6 +81,20 @@ const AssistantMessage = ({ message }: { message: Message }) => {
   if (message.role === "system") {
     return null;
   }
+
+  if (message.content.startsWith("{")) {
+    if (message.content.endsWith("}")) {
+      const maybeJSONResponse = parseProtocol(message.content);
+
+      if (maybeJSONResponse.success) {
+        const data = maybeJSONResponse.data;
+        return <WeatherWidget {...data}/>;
+      }
+    } else {
+      return <TypingIndicator />;
+    }
+  }
+
   return (
     <React.Fragment key={message.id}>
       <motion.div
@@ -77,7 +108,7 @@ const AssistantMessage = ({ message }: { message: Message }) => {
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="p-4 rounded-md  bg-gray-200 dark:bg-gray-800 text-left"
+            className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-left"
           >
             {message.content}
           </motion.span>
@@ -117,4 +148,21 @@ const TypingIndicator = () => {
       <div className="col-span-2"></div>
     </>
   );
+};
+
+const myObjectSchema = z.object({
+  baseUrl: z.string().regex(/^ai:\/\/.+/),
+  endpoint: z.string(),
+  params: z.object({
+    city: z.string().optional(),
+  }),
+});
+
+const parseProtocol = (message: string) => {
+  try {
+    const invalidatedJson = JSON.parse(message);
+    return myObjectSchema.safeParse(invalidatedJson);
+  } catch (e) {
+    throw myObjectSchema.safeParse({});
+  }
 };

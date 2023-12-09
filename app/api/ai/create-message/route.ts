@@ -1,7 +1,7 @@
 import { conversations, db } from '@/lib/db';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
-import { z } from 'zod';
+import { number, z } from 'zod';
 
 interface Protocol {
     description: string,
@@ -16,9 +16,7 @@ interface Protocol {
                 }
             },
             request: {
-                headers: {
-                    [key: string]: string
-                },
+                headers: string[],
                 description: string
                 body: {
                     [key: string]: string
@@ -49,22 +47,55 @@ const AI_WEBSITES: Protocol[] = [
         description: 'A weather website',
         endpoints: {
             '/weather': {
-                description: 'Get the weather for a given location',
+                description: 'Get the weather for a given city',
                 action: 'GET',
                 params: {
-                    location: {
-                        description: 'The location to get the weather for',
+                    city: {
+                        description: '',
                         type: 'string'
                     },
                 },
                 request: {
-                    headers: {},
-                    description: 'No request body',
+                    headers: ['Token', "unit"],
+                    description: 'An authentication token to attach to the request',
                     body: {}
                 },
                 response: {
                     headers: {},
                     description: 'The weather for the given location',
+                    body: {
+                        temperature: 'number',
+                        unit: "F or C",
+                        rainPercentage: 'number',
+                        windSpeed: 'number',
+                        location: 'string'
+                    }
+                }
+            },
+            /**
+             * And endpoint for getting the 5-day forecast
+             */
+            '/forecast': {
+                description: 'Get the 5-day forecast for a given location',
+                action: 'GET',
+                params: {
+                    location: {
+                        description: 'The location to get the 5-day forecast for',
+                        type: 'string'
+                    },
+                    startDate: {
+                        description: 'The start date of the forecast',
+                        type: 'string'
+                    }
+                },
+                request: {
+                    headers: ['Token'],
+                    description: 'An authentication token to attach to the request',
+                    body: {}
+                },
+                response: {
+                    headers: {},
+                    description: 'The forecast for the given location',
                     body: {
                         temperature: 'number',
                         weather: 'string',

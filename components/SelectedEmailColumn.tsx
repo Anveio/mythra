@@ -12,10 +12,5 @@ export async function SelectedEmailColumn({
   if (!isAuthenticated || !user) {
     return <EmailEmptyView />;
   }
-
-  // const messages = searchParams.id
-  //   ? await getMessagesInConversation(user.id, searchParams.id)
-  //   : [];
-
-  return <ChatBox />;
+  return;
 }

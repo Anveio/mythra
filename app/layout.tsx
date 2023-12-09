@@ -88,7 +88,7 @@ export default async function RootLayout({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 max-h-[calc(100vh-56px)] h-screen">
+          <div className="grid grid-cols-1 max-h-[calc(100vh-56px)] h-screen max-w-7xl mx-auto">
             {conversation}
             {children}
           </div>

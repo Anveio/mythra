@@ -14,7 +14,9 @@ export async function SignInButton() {
             await clearCookie();
           }}
         >
-          <Button type="submit">Sign Out</Button>
+          <Button type="submit" variant={"outline"}>
+            Sign Out
+          </Button>
         </form>
       </div>
     );

@@ -1,4 +1,4 @@
-import { SelectedEmailColumn } from "@/components/SelectedEmailColumn";
+import ChatBox from "@/components/ChatBox";
 import { EmailEmptyView } from "@/components/email-empty-view";
 import * as React from "react";
 
@@ -11,11 +11,7 @@ interface Props {
 export default async function ConversationPage({ params }: Props) {
   return (
     <React.Suspense fallback={<EmailEmptyView />}>
-      <SelectedEmailColumn
-        searchParams={{
-          id: params.id,
-        }}
-      />
+      <ChatBox />
     </React.Suspense>
   );
 }
