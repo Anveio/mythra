@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "6b268638-9ad4-4033-bbd6-fb399ecbf8ee",
+  "id": "4e4cda71-ae41-436b-839c-919f10026150",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "conversations": {
@@ -9,29 +9,75 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "varchar(6)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
-        },
-        "public_id": {
-          "name": "public_id",
-          "type": "varchar(12)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
         },
         "title": {
           "name": "title",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(31)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "created_at_idx": {
+          "name": "created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "messages": {
+      "name": "messages",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "content": {
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "conversation_id": {
+          "name": "conversation_id",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -51,17 +97,17 @@
             "created_at"
           ],
           "isUnique": true
+        },
+        "conversation_id_idx": {
+          "name": "conversation_id_idx",
+          "columns": [
+            "conversation_id"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "conversations_id": {
-          "name": "conversations_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "users": {
@@ -69,21 +115,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "private_id": {
-          "name": "private_id",
-          "type": "varchar(12)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "public_id": {
-          "name": "public_id",
-          "type": "varchar(12)",
+          "type": "varchar(31)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -102,13 +134,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "(now())"
-        },
-        "email_verified_at": {
-          "name": "email_verified_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {
@@ -118,24 +143,10 @@
             "email"
           ],
           "isUnique": true
-        },
-        "public_id_idx": {
-          "name": "public_id_idx",
-          "columns": [
-            "public_id"
-          ],
-          "isUnique": true
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "users_id": {
-          "name": "users_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",

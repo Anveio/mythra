@@ -1,1 +1,0 @@
-ALTER TABLE `users` MODIFY COLUMN `private_id` varchar(31) NOT NULL;

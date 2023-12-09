@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1702012151660,
-      "tag": "0000_sudden_blindfold",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1702012489646,
-      "tag": "0001_empty_imperial_guard",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1702012513308,
-      "tag": "0002_sturdy_madame_masque",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1702028082616,
-      "tag": "0003_special_bloodaxe",
+      "when": 1702082304763,
+      "tag": "0000_colorful_grandmaster",
       "breakpoints": true
     }
   ]

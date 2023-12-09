@@ -1,18 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { WorkOS } from '@workos-inc/node';
-import { SignJWT } from "jose";
-import { z } from 'zod';
 import { getJwtSecretKey } from '@/lib/auth';
 import { db, users } from '@/lib/db';
+import { WorkOS } from '@workos-inc/node';
 import { eq } from 'drizzle-orm';
-import { customAlphabet } from 'nanoid';
+import { SignJWT } from "jose";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 const workOsApiKey = process.env.WORKOS_API_KEY;
 
 if (!workOsApiKey) {
     throw new Error('WORKOS_API_KEY environment variable not set');
 }
-
-const generateNanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 6);
 
 const workos = new WorkOS(workOsApiKey);
 
@@ -53,8 +50,7 @@ export async function GET(req: NextRequest) {
     if (!userInDb) {
         await createUser({
             email: user.email,
-            privateId: user.id,
-            publicId: generateNanoid(),
+            id: user.id,
         });
     }
 
@@ -91,8 +87,7 @@ export async function GET(req: NextRequest) {
 
 const insertUserSchema = z.object({
     email: z.string().email(),
-    privateId: z.string(),
-    publicId: z.string(),
+    id: z.string(),
 });
 
 const createUser = (

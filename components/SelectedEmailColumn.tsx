@@ -13,9 +13,9 @@ export async function SelectedEmailColumn({
     return <EmailEmptyView />;
   }
 
-  const messages = searchParams.id
-    ? await getMessagesInConversation(user.id, searchParams.id)
-    : [];
+  // const messages = searchParams.id
+  //   ? await getMessagesInConversation(user.id, searchParams.id)
+  //   : [];
 
   return <ChatBox />;
 }

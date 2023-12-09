@@ -10,28 +10,22 @@ import {
 export const users = mysqlTable(
     "users",
     {
-        id: serial("id").primaryKey().autoincrement(),
-        privateId: varchar("private_id", { length: 31 }).notNull(),
-        publicId: varchar("public_id", { length: 6 }).notNull(),
+        id: varchar("id", { length: 31 }).notNull(),
         email: varchar("email", { length: 319 }).notNull().unique(),
         createdAt: timestamp("created_at").defaultNow(),
-        emailVerifiedAt: timestamp("email_verified_at"),
     },
     (users) => ({
         emailIndex: uniqueIndex("email_idx").on(users.email),
-        publicId: uniqueIndex("public_id_idx").on(users.publicId),
     })
 );
 
 export const conversations = mysqlTable(
     "conversations",
     {
-        id: serial("id").primaryKey().autoincrement(),
+        id: varchar("id", { length: 6 }).notNull(),
         createdAt: timestamp("created_at").defaultNow().notNull(),
-        publicId: varchar("public_id", { length: 6 }).notNull(),
         title: varchar("title", { length: 255 }),
-        userId: int("user_id").notNull(),
-        userPrivateId: varchar("private_id", { length: 31 }).notNull()
+        userId: varchar("user_id", { length: 31 }).notNull(),
     },
     (conversations) => ({
         createdAtIndex: uniqueIndex("created_at_idx").on(
@@ -39,3 +33,16 @@ export const conversations = mysqlTable(
         ),
     })
 )
+
+export const messages = mysqlTable("messages", {
+    id: varchar("id", { length: 6 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    content: varchar("content", { length: 255 }).notNull(),
+    conversationId: int("conversation_id").notNull(),
+    userId: int("user_id").notNull(),
+}, (messages) => {
+    return {
+        createdAtIndex: uniqueIndex("created_at_idx").on(messages.createdAt),
+        conversationIdIndex: uniqueIndex("conversation_id_idx").on(messages.conversationId),
+    }
+})

@@ -8,8 +8,7 @@ export default async function ConversationLayout({
 }) {
   return (
     <>
-      <ConversationListColumn searchParams={{}} />
-      {children}
+      <ConversationListColumn />
     </>
   );
 }

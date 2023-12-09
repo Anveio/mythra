@@ -1,45 +1,45 @@
 import { and, eq } from "drizzle-orm";
 import { conversations, db } from ".";
 
-export const getConversationsByUserPrivateId = async (privateId: string) => {
+export const getConversationsByUserId = async (privateId: string) => {
     return db
         .select({
-            publicId: conversations.publicId,
-            userPrivateId: conversations.userPrivateId,
+            id: conversations.id,
+            userId: conversations.userId,
             title: conversations.title,
             createdAt: conversations.createdAt,
         })
         .from(conversations)
-        .where(eq(conversations.userPrivateId, privateId));
+        .where(eq(conversations.userId, privateId));
 };
 
 export const getMessagesInConversation = async (
-    userPrivateId: string,
-    conversationPublicId: string
+    userId: string,
+    conversationid: string
 ) => {
     return db
         .select({
-            publicId: conversations.publicId,
-            userPrivateId: conversations.userPrivateId,
+            id: conversations.id,
+            userId: conversations.userId,
             title: conversations.title,
             createdAt: conversations.createdAt,
         })
         .from(conversations)
         .where(
             and(
-                eq(conversations.userPrivateId, userPrivateId),
-                eq(conversations.publicId, conversationPublicId)
+                eq(conversations.userId, userId),
+                eq(conversations.id, conversationid)
             )
         );
 };
 
-export const deleteConversation = async (userPrivateId: string, conversationPublicId: string) => {
+export const deleteConversation = async (userId: string, conversationid: string) => {
     return db
         .delete(conversations)
         .where(
             and(
-                eq(conversations.userPrivateId, userPrivateId),
-                eq(conversations.publicId, conversationPublicId)
+                eq(conversations.userId, userId),
+                eq(conversations.id, conversationid)
             )
         );
 }

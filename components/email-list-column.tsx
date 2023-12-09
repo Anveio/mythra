@@ -1,24 +1,20 @@
 import Link from "next/link";
-import { getConversationsByUserPrivateId } from "@/lib/db/queries";
 import { getUser } from "@/lib/auth";
 import { Button } from "./ui/button";
+import { getConversationsByUserId } from "@/lib/db/queries";
 
-export async function ConversationListColumn({
-  searchParams,
-}: {
-  searchParams: { q?: string; id?: string };
-}) {
+export async function ConversationListColumn() {
   const { isAuthenticated, user } = await getUser();
 
   if (!isAuthenticated || !user) {
     return <div />;
   }
 
-  const conversations = await getConversationsByUserPrivateId(user.id);
+  const conversations = await getConversationsByUserId(user.id);
 
   function createUrl(id: string) {
     const baseUrl = `/c`;
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
     params.set("id", id);
     return `${baseUrl}?${params}`;
   }
@@ -30,20 +26,17 @@ export async function ConversationListColumn({
           <h2 className="text-lg font-semibold text-black dark:text-gray-400">
             Conversations
           </h2>
-          <Button>New</Button>
+          <Button variant={"secondary"}>New</Button>
         </div>
       </div>
       <ul className="divide-y divide-gray-200 dark:divide-gray-800">
         {conversations.map((conversation) => (
-          <Link
-            key={conversation.publicId}
-            href={createUrl(conversation.publicId)}
-          >
+          <Link key={conversation.id} href={createUrl(conversation.id)}>
             <li className="p-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer flex justify-between items-start rounded-lg">
               <div className="w-full truncate">
                 <h2 className="text-base font-bold">{conversation.title}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {conversation.userPrivateId}
+                  {conversation.userId}
                 </p>
                 <p className="text-sm truncate overflow-ellipsis">
                   {conversation.title}
