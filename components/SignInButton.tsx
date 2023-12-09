@@ -1,29 +1,27 @@
 import { clearCookie, getAuthorizationUrl, getUser } from "@/lib/auth";
-import { Button, Flex } from "@radix-ui/themes";
+import { Button } from "./ui/button";
 
-export async function SignInButton({ large }: { large?: boolean }) {
+export async function SignInButton() {
   const { isAuthenticated } = await getUser();
   const authorizationUrl = await getAuthorizationUrl();
 
   if (isAuthenticated) {
     return (
-      <Flex gap="3">
+      <div>
         <form
           action={async () => {
             "use server";
             await clearCookie();
           }}
         >
-          <Button type="submit" size={large ? "3" : "2"}>
-            Sign Out
-          </Button>
+          <Button type="submit">Sign Out</Button>
         </form>
-      </Flex>
+      </div>
     );
   }
 
   return (
-    <Button asChild size={large ? "3" : "2"}>
+    <Button asChild>
       <a href={authorizationUrl}>Sign In</a>
     </Button>
   );
