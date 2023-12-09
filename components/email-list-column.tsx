@@ -20,7 +20,7 @@ export async function ConversationListColumn() {
   }
 
   return (
-    <div className="w-full border-r border-gray-200  dark:border-gray-800">
+    <div className="w-full border-r border-gray-200  dark:border-gray-800 sm:block hidden">
       <div className="border-b-[1px]">
         <div className="flex p-2 justify-between items-center  overflow-y-auto px-2">
           <h2 className="text-lg font-semibold text-black dark:text-gray-400">

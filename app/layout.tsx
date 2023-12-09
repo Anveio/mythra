@@ -82,7 +82,7 @@ export default async function RootLayout({
         <div className="h-14 border-b-1 border-b">
           <div className="px-4"></div>
         </div>
-        <div className="grid grid-cols-[minmax(200px,1fr)_3fr] max-h-[calc(100vh-56px)] h-screen">
+        <div className="grid grid-cols-1 sm:grid-cols-[minmax(200px,1fr)_3fr] max-h-[calc(100vh-56px)] h-screen">
           {conversation}
           {children}
         </div>
