@@ -82,12 +82,13 @@ export default function ChatBox() {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 sticky bottom-2">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row gap-3">
             <Input
               placeholder="Say something..."
               value={input}
+              className="shadow-lg"
               onChange={handleInputChange}
             />
             <Button type="submit">Send</Button>
