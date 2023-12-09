@@ -28,10 +28,10 @@ const getConversationsByPrivateId = async (privateId: string) => {
   return db
     .select({
       id: conversations.id,
-      userPrivateId: conversations.userPrivateId,
+      userId: conversations.userId,
       title: conversations.title,
       createdAt: conversations.createdAt,
     })
     .from(conversations)
-    .where(eq(conversations.userPrivateId, privateId));
+    .where(eq(conversations.userId, privateId));
 };
