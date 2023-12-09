@@ -1,41 +1,22 @@
-import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { Configuration, OpenAIApi } from 'openai-edge'
-import { z } from 'zod'
-import { conversations, db, messages, users } from '@/lib/db';
-import { eq } from 'drizzle-orm';
-import { getUser } from '@/lib/auth';
+import { conversations, db } from '@/lib/db';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
+import OpenAI from 'openai';
+import { z } from 'zod';
 
 
-// Create an OpenAI API client (that's edge friendly!)
-const config = new Configuration({
-    apiKey: process.env.OPEN_AI_API_KEY
-})
-const openai = new OpenAIApi(config)
+const openai = new OpenAI({
+    apiKey: process.env.OPEN_AI_API_KEY!,
+});
 
 // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge'
 
-const requestBodySchema = z.object({
-    messages: z.array(z.object({
-        role: z.enum(['system', 'user', 'assistant', 'function']),
-        content: z.string(),
-    })),
-})
-
 export async function POST(req: Request) {
-    const unsafeBody = await req.json()
-
-    const parseResult = requestBodySchema.safeParse(unsafeBody)
-
-    if (!parseResult.success) {
-        return new Response(JSON.stringify(parseResult.error.issues), { status: 400 })
-    }
-
-    const { messages } = parseResult.data
+    const { messages } = await req.json();
 
     try {
         // Ask OpenAI for a streaming chat completion given the prompt
-        const response = await openai.createChatCompletion({
+        const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             stream: true,
             messages,
