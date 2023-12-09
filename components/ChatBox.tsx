@@ -47,9 +47,9 @@ export default function ChatBox() {
             <AnimatePresence>
               {messages.map((m) => {
                 if (m.role === "assistant" || m.role === "system") {
-                  return <AssistantMessage message={m} />;
+                  return <AssistantMessage message={m} key={m.id} />;
                 } else {
-                  return <UserMessage message={m} />;
+                  return <UserMessage message={m} key={m.id} />;
                 }
               })}
 
@@ -88,7 +88,7 @@ const AssistantMessage = ({ message }: { message: Message }) => {
 
       if (maybeJSONResponse.success) {
         const data = maybeJSONResponse.data;
-        return <WeatherWidget {...data}/>;
+        return <WeatherWidget {...data} />;
       }
     } else {
       return <TypingIndicator />;
