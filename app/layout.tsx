@@ -11,10 +11,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  conversation,
 }: {
   children: React.ReactNode;
-  conversation: React.ReactNode;
 }) {
   const { isAuthenticated, user } = await getUser();
 
@@ -89,7 +87,6 @@ export default async function RootLayout({
           </div>
         ) : (
           <div className="grid grid-cols-1 max-h-[calc(100vh-56px)] h-screen max-w-7xl mx-auto">
-            {conversation}
             {children}
           </div>
         )}

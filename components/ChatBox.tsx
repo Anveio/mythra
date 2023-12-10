@@ -1,6 +1,4 @@
 "use client";
-import { useLocalStorage } from "@uidotdev/usehooks";
-
 import { Message, useChat } from "ai/react";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
@@ -8,6 +6,28 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { z } from "zod";
 import { WeatherWidget } from "./WeatherWidget";
+
+const getUrlForMessageOrNothing = (message: Message) => {
+  if (message.role === "assistant") {
+    const maybeJSONResponse = parseProtocol(message.content);
+
+    if (maybeJSONResponse.success) {
+      const data = maybeJSONResponse.data;
+      const fullUrl = new URL(data.baseUrl + data.endpoint);
+      for (const [key, value] of Object.entries(data.params)) {
+        fullUrl.searchParams.append(key, value);
+      }
+      return {
+        url: fullUrl,
+        baseUrl: data.baseUrl,
+        endpoint: data.endpoint,
+        id: message.id,
+      };
+    }
+  }
+
+  return undefined;
+};
 
 export default function ChatBox() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -18,21 +38,58 @@ export default function ChatBox() {
         {
           content: "What's the weather like in Seattle today?",
           role: "user",
-          createdAt: new Date("2023-12-09T22:27:53.467Z"),
-          id: "MYykhXT",
+          createdAt: new Date("2023-12-10T08:22:32.398Z"),
+          id: "oPM8tdm",
         },
         {
-          id: "0pL1UNu",
-          createdAt: new Date("2023-12-09T22:28:53.467Z"),
+          id: "2AKk7nY",
+          createdAt: new Date("2023-12-10T09:22:32.398Z"),
           content:
-            '{"baseUrl":"ai://nightsky","endpoint":"/weather","params":{"city":"Seattle"}}',
+            '{"baseUrl":"http://www.example-weather-app.com","endpoint":"/weather","params":{"city":"Seattle"}}',
           role: "assistant",
         },
       ],
     });
 
-  console.log(messages);
+  const assistantMessages = messages.filter(
+    (message) => message.role === "assistant"
+  );
 
+  const urlHistory: Record<string, URL[]> = {};
+
+  const consolidatedMessages: Message[] = [...messages];
+
+  assistantMessages.forEach((message) => {
+    const urlForMessage = getUrlForMessageOrNothing(message);
+    if (urlForMessage) {
+      urlHistory[urlForMessage.baseUrl] = urlHistory[urlForMessage.baseUrl]
+        ? [...urlHistory[urlForMessage.baseUrl], urlForMessage.url]
+        : [urlForMessage.url];
+    }
+  });
+
+  let lastSeenBaseUrl = null;
+  let lastSeenBaseUrlIndex = 0;
+
+  /**
+   * Iterate through consolidated messages forards and for any message that has
+   * a base URL the same as the lastSeenBaseUrl, remove it from the array and
+   * set the message of the element at the index of lastSeenBaseUrl
+   */
+  for (let i = 0; i < consolidatedMessages.length; i++) {
+    const message = consolidatedMessages[i];
+    const urlForMessage = getUrlForMessageOrNothing(message);
+
+    if (urlForMessage) {
+      if (lastSeenBaseUrl === urlForMessage.baseUrl) {
+        consolidatedMessages.splice(i, 1);
+        consolidatedMessages[lastSeenBaseUrlIndex] = message;
+      } else {
+        lastSeenBaseUrl = urlForMessage.baseUrl;
+        lastSeenBaseUrlIndex = i;
+      }
+    }
+  }
   return (
     <div className="flex flex-col w-full">
       <div className="relative flex-1">
@@ -45,9 +102,15 @@ export default function ChatBox() {
         ) : (
           <div className="p-4 grid grid-cols-6 gap-3">
             <AnimatePresence>
-              {messages.map((m) => {
+              {consolidatedMessages.map((m) => {
                 if (m.role === "assistant" || m.role === "system") {
-                  return <AssistantMessage message={m} key={m.id} />;
+                  return (
+                    <AssistantMessage
+                      message={m}
+                      key={m.id}
+                      urlHistory={urlHistory}
+                    />
+                  );
                 } else {
                   return <UserMessage message={m} key={m.id} />;
                 }
@@ -77,46 +140,30 @@ export default function ChatBox() {
   );
 }
 
-const AssistantMessage = ({ message }: { message: Message }) => {
-  if (message.role === "system") {
-    return null;
-  }
-
+const AssistantMessage = ({
+  message,
+  urlHistory,
+}: {
+  message: Message;
+  urlHistory: Record<string, URL[]>;
+}) => {
   if (message.content.startsWith("{")) {
     if (message.content.endsWith("}")) {
       const maybeJSONResponse = parseProtocol(message.content);
 
       if (maybeJSONResponse.success) {
         const data = maybeJSONResponse.data;
-        return <WeatherWidget {...data} />;
+        return (
+          <WeatherWidget
+            {...data}
+            historyForUrl={urlHistory[data.baseUrl] || []}
+          />
+        );
       }
     } else {
       return <TypingIndicator />;
     }
   }
-
-  return (
-    <React.Fragment key={message.id}>
-      <motion.div
-        key={message.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        className="col-span-4 flex justify-start"
-      >
-        <AnimatePresence>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 text-left"
-          >
-            {message.content}
-          </motion.span>
-        </AnimatePresence>
-      </motion.div>
-      <div className="col-span-2"></div>
-    </React.Fragment>
-  );
 };
 
 const UserMessage = ({ message }: { message: Message }) => {
@@ -151,7 +198,7 @@ const TypingIndicator = () => {
 };
 
 const myObjectSchema = z.object({
-  baseUrl: z.string().regex(/^ai:\/\/.+/),
+  baseUrl: z.string(),
   endpoint: z.string(),
   params: z.object({
     city: z.string().optional(),
@@ -163,6 +210,6 @@ const parseProtocol = (message: string) => {
     const invalidatedJson = JSON.parse(message);
     return myObjectSchema.safeParse(invalidatedJson);
   } catch (e) {
-    throw myObjectSchema.safeParse({});
+    return myObjectSchema.safeParse({});
   }
 };

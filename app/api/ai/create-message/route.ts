@@ -1,7 +1,7 @@
 import { conversations, db } from '@/lib/db';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
-import { number, z } from 'zod';
+import { z } from 'zod';
 
 interface Protocol {
     description: string,
@@ -33,7 +33,7 @@ interface Protocol {
             }
         }
     },
-    baseUrl: `ai://${string}`,
+    baseUrl: `${string}`,
 }
 
 /**
@@ -104,11 +104,11 @@ const AI_WEBSITES: Protocol[] = [
                 }
             }
         },
-        baseUrl: 'ai://nightsky'
+        baseUrl: 'http://www.example-weather-app.com'
     }
 ]
 
-const SAMPLE = { "baseUrl": "ai://nightsky", "endpoint": "/weather", "params": { "location": "Seattle" } }
+const SAMPLE = { "baseUrl": "http://www.example-weather-app.com", "endpoint": "/weather", "params": { "location": "Seattle" } }
 
 const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_API_KEY!,
