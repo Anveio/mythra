@@ -6,6 +6,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { z } from "zod";
 import { WeatherWidget } from "./WeatherWidget";
+import { useConversationsStore } from "@/lib/conversations-state";
+import { customAlphabet } from "nanoid";
 
 const getUrlForMessageOrNothing = (message: Message) => {
   if (message.role === "assistant") {
@@ -29,27 +31,41 @@ const getUrlForMessageOrNothing = (message: Message) => {
   return undefined;
 };
 
+const nanoid = customAlphabet("1234567890abcdef", 10);
+
 export default function ChatBox() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      initialInput: "What's the weather like in Seattle today?",
-      api: "/api/ai/create-message",
-      initialMessages: [
-        {
-          content: "What's the weather like in Seattle today?",
-          role: "user",
-          createdAt: new Date("2023-12-10T08:22:32.398Z"),
-          id: "oPM8tdm",
-        },
-        {
-          id: "2AKk7nY",
-          createdAt: new Date("2023-12-10T09:22:32.398Z"),
-          content:
-            '{"baseUrl":"http://www.example-weather-app.com","endpoint":"/weather","params":{"city":"Seattle"}}',
-          role: "assistant",
-        },
-      ],
-    });
+  const { conversations, currentConversationId, updateConversation } =
+    useConversationsStore();
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    setMessages,
+  } = useChat({
+    initialInput: "What's the weather like in Seattle today?",
+    api: "/api/ai/create-message",
+    initialMessages:
+      currentConversationId && conversations[currentConversationId]
+        ? conversations[currentConversationId]
+        : [],
+  });
+
+  console.log(currentConversationId);
+
+  React.useEffect(() => {
+    if (currentConversationId) {
+      setMessages(conversations[currentConversationId] || []);
+    }
+  }, [currentConversationId]);
+
+  React.useEffect(() => {
+    if (currentConversationId) {
+      updateConversation(currentConversationId, messages);
+    }
+  }, [messages]);
 
   const assistantMessages = messages.filter(
     (message) => message.role === "assistant"
@@ -91,7 +107,7 @@ export default function ChatBox() {
     }
   }
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full h-full">
       <div className="relative flex-1">
         {messages.length === 0 && !isLoading ? (
           <div className="flex flex-col h-full items-center justify-center">
@@ -124,7 +140,23 @@ export default function ChatBox() {
         )}
       </div>
       <div className="p-4 sticky bottom-2">
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+            const id = currentConversationId || nanoid();
+
+            console.log("ID: ", id);
+
+            updateConversation(
+              id,
+              messages.concat({
+                content: input,
+                role: "user",
+                id: nanoid(),
+              })
+            );
+          }}
+        >
           <div className="flex flex-row gap-3">
             <Input
               placeholder="Say something..."
