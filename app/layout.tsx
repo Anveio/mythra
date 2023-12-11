@@ -22,32 +22,34 @@ export default async function RootLayout({
 }) {
   const { isAuthenticated, user } = await getUser();
 
-  console.log("Authenticated: ", isAuthenticated);
-
   return (
     <html
       lang="en"
       className="bg-white dark:bg-gray-950 text-black dark:text-white"
     >
       <body className={cn(GeistSans.variable, GeistSans.className)}>
-        <div className="static md:grid md:grid-cols-[15rem_1fr]">
-          <Sidebar />
-          <div>
-            <div className="grid grid-rows-[min-content_1fr] md:grid-rows-1">
-              <div className="border-b-1 border-b shadow-sm">
-                <div className="max-w-4xl h-14 mx-auto flex p-4 justify-between items-center ">
-                  <Link href={"/about"}>
-                    <h1 className="text-xl font-semibold">Mythra</h1>
-                  </Link>
-                  <div className="flex items-center">
-                    <SignInButton />
-                    <MobileNavMenuOpener />
-                  </div>
+        <div className="radial-gradient select-none" />
+        <div
+          className={cn(
+            "relative",
+            isAuthenticated ? "md:grid md:grid-cols-[15rem_1fr]" : ""
+          )}
+        >
+          {isAuthenticated && <Sidebar />}
+          <div className="h-full">
+            <div className="border-b-1 border-b shadow-sm">
+              <div className="max-w-4xl h-14 mx-auto flex py-4 justify-between items-center">
+                <Link href={"/about"}>
+                  <h1 className="text-xl font-semibold">Mythra</h1>
+                </Link>
+                <div className="flex items-center">
+                  <SignInButton />
+                  <MobileNavMenuOpener />
                 </div>
               </div>
-              <div className="max-w-4xl mx-auto min-h-[100dvh]">
-                {!isAuthenticated || !user ? <Whitepaper /> : children}
-              </div>
+            </div>
+            <div className="max-w-4xl mx-auto">
+              {!isAuthenticated || !user ? <Whitepaper /> : children}
             </div>
           </div>
         </div>

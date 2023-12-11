@@ -13,7 +13,7 @@ export const Codeblock = (props: Props) => {
   return (
     <div
       className={cn(
-        "wrapper rounded-md overflow-x-auto max-w-lg mx-auto border-[1px] border-solid border-zinc-700",
+        "wrapper rounded-md max-w-lg mx-auto border-[1px] border-solid border-zinc-700",
         props.className
       )}
     >
@@ -34,7 +34,7 @@ export const Codeblock = (props: Props) => {
           <CopyCodeButton {...props} />
         </div>
       </div>
-      <div className=" bg-zinc-900 overflow-x-auto">
+      <div className=" bg-zinc-900">
         <SyntaxHighlightedText text={props.text} language={props.language} />
       </div>
     </div>

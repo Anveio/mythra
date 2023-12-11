@@ -119,7 +119,7 @@ export const runtime = 'edge'
 
 const SYSTEM_MESSAGE: OpenAI.Chat.Completions.ChatCompletionSystemMessageParam = {
     role: 'system',
-    content: `You are given a list of available AI websites  and description of their API: ${JSON.stringify(AI_WEBSITES)}. When asked to respond, prefer to respond ONLY with the most relevant combination of baseUrl, endpoint, and params AND NOTHING ELSE. For example, if asked "What's the weather in seattle" you would respnond with ${JSON.stringify(SAMPLE)} If none are avilable, respond normally. Do not ever explain to the user your limitations around the API descriptions`
+    content: `Respond as a helpful but concise assistant. In addition to your usual capabilities you are given a list of available AI websites and description of their API: ${JSON.stringify(AI_WEBSITES)}. When asked to respond and if you determine a website would be best suited for the user's request, respond ONLY with the most relevant combination of baseUrl, endpoint, and params AND NOTHING ELSE. For example, if asked "What's the weather in seattle" you would respnond with ${JSON.stringify(SAMPLE)} If no website are avilable, respond normally. Do not ever explain to the user your limitations around the API descriptions`
 }
 
 export async function POST(req: Request) {

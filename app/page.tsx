@@ -11,7 +11,9 @@ interface Props {
 export default async function ConversationPage({ params }: Props) {
   return (
     <React.Suspense fallback={<EmailEmptyView />}>
-      <ChatBox />
+      <main>
+        <ChatBox />
+      </main>
     </React.Suspense>
   );
 }

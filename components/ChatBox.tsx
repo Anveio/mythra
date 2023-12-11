@@ -43,7 +43,7 @@ export default function ChatBox() {
     handleInputChange,
     handleSubmit,
     isLoading,
-    setMessages
+    setMessages,
   } = useChat({
     initialInput: "What's the weather like in Seattle today?",
     api: "/api/ai/create-message",
@@ -54,6 +54,20 @@ export default function ChatBox() {
   });
 
   console.log(currentConversationId);
+
+  const latestStreamedMessage = isLoading ? messages.at(-1)?.content : null;
+
+  React.useEffect(() => {
+    if (latestStreamedMessage) {
+      /**
+       * Scroll to the bottom of the page.
+       */
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [latestStreamedMessage]);
 
   React.useEffect(() => {
     if (currentConversationId) {
@@ -110,7 +124,7 @@ export default function ChatBox() {
   console.log("consolidated: ", consolidatedMessages);
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full min-h-[calc(100dvh-56px)] static">
       <div className="relative flex-1">
         {messages.length === 0 && !isLoading ? (
           <div className="flex flex-col h-full items-center justify-center">
@@ -187,22 +201,36 @@ const AssistantMessage = ({
   message: Message;
   urlHistory: Record<string, URL[]>;
 }) => {
-  if (message.content.startsWith("{")) {
-    if (message.content.endsWith("}")) {
-      const maybeJSONResponse = parseProtocol(message.content);
+  if (message.content.startsWith("{") && message.content.endsWith("}")) {
+    const maybeJSONResponse = parseProtocol(message.content);
 
-      if (maybeJSONResponse.success) {
-        const data = maybeJSONResponse.data;
-        return (
-          <WeatherWidget
-            {...data}
-            historyForUrl={urlHistory[data.baseUrl] || []}
-          />
-        );
-      }
-    } else {
-      return <TypingIndicator />;
+    if (maybeJSONResponse.success) {
+      const data = maybeJSONResponse.data;
+      return (
+        <WeatherWidget
+          {...data}
+          historyForUrl={urlHistory[data.baseUrl] || []}
+        />
+      );
     }
+  } else {
+    return (
+      <React.Fragment key={message.id}>
+        <motion.div className="col-span-4 flex justify-start whitespace-pre-line">
+          <motion.span
+            className="p-4 rounded-md bg-gray-200 dark:bg-gray-800 "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+            }}
+          >
+            {message.content}
+          </motion.span>
+        </motion.div>
+        <div className="col-span-2"></div>
+      </React.Fragment>
+    );
   }
 };
 
