@@ -142,6 +142,10 @@ export default function ChatBox() {
       <div className="p-4 sticky bottom-2">
         <form
           onSubmit={(e) => {
+            if (isLoading) {
+              return;
+            }
+
             handleSubmit(e);
             const id = currentConversationId || nanoid();
 
