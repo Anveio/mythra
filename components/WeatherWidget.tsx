@@ -57,10 +57,7 @@ export const WeatherWidget = (props: Props) => {
   });
 
   const [historyIndex, setHistoryIndex] = useState(0);
-  console.log(
-    "🚀 ~ file: WeatherWidget.tsx:60 ~ WeatherWidget ~ historyIndex:",
-    historyIndex
-  );
+  console.log("🚀historyForUrl", props.historyForUrl);
 
   const [propsCopy, setPropsCopy] = useState({ ...props });
 
@@ -70,6 +67,17 @@ export const WeatherWidget = (props: Props) => {
     });
   }, [props.historyForUrl]);
 
+  React.useEffect(() => {
+    if (cardElementRef.current) {
+      setTimeout(() => {
+        cardElementRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 250);
+    }
+  }, [props.historyForUrl.length]);
+
   const [unitsOfMeasurement, setUnitsOfMeasurement] = useState({
     temperature: "F",
     speed: "mph",
@@ -77,6 +85,7 @@ export const WeatherWidget = (props: Props) => {
 
   const url = propsCopy.historyForUrl[historyIndex];
 
+  console.log("url", url);
   const [urlInput, setUrlInput] = React.useState(url.toString());
 
   React.useEffect(() => {
@@ -99,6 +108,8 @@ export const WeatherWidget = (props: Props) => {
     }
   }, [city]);
 
+  const cardElementRef = React.useRef<HTMLDivElement>(null);
+
   if (!city) {
     return null;
   }
@@ -113,7 +124,7 @@ export const WeatherWidget = (props: Props) => {
         }}
         className="col-span-6 w-full"
       >
-        <Card>
+        <Card ref={cardElementRef}>
           <CardHeader>
             <div className="grid gap-3 grid-cols-[48px_48px_1fr]">
               <Button
