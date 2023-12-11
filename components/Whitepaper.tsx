@@ -64,12 +64,16 @@ export const Whitepaper = () => {
                 requests. HTTP requests are simply strings of text (really 1s
                 and 0s) that are sent over the wire and propagate through a
                 global network of interconnected computers until they arrive at
-                the computer meant to handle that particular HTTP request. Upon
-                receiving the request, the computer at the other end decodes the
-                string of text, which it knows how to do because the string of
-                text is formatted in accordance with the HTTP protocol, and
-                executes some code to send back to the sender of the request
-                some bit of data: HTML text, JSON text, a JPG image, etc
+                the computer meant to handle that particular HTTP request. The
+                computer at the other end, upon receiving the 1s and 0s, decodes
+                the binary as a string and parses the string into its
+                constituent parts (the HTTP verb, the requested path, the
+                headers, the form body, etc.), which it knows how to do because
+                the string of text is formatted in accordance with the HTTP
+                protocol, and executes some code to send back to the sender of
+                the request some bit of data: HTML text, JSON text, a JPG image,
+                etc. It may also choose to initiate some other side effects as a
+                result of receiving this request, such as update a database.
               </p>
               <p>
                 HTTP is therefore a way of using text to command computers
