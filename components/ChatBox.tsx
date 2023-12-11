@@ -127,7 +127,7 @@ export default function ChatBox() {
     <div className="flex flex-col w-full h-full min-h-[calc(100dvh-56px)] static">
       <div className="relative flex-1">
         {messages.length === 0 && !isLoading ? (
-          <div className="flex flex-col h-full items-center justify-center">
+          <div className="flex flex-col h-screen items-center justify-center">
             <div className="mb-5 text-2xl font-medium text-center">
               How can I help you today?
             </div>

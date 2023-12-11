@@ -38,7 +38,7 @@ export default async function RootLayout({
           {isAuthenticated && <Sidebar />}
           <div className="h-full">
             <div className="border-b-1 border-b shadow-sm">
-              <div className="max-w-4xl h-14 mx-auto flex py-4 justify-between items-center">
+              <div className="max-w-4xl px-2 h-14 mx-auto flex py-4 justify-between items-center">
                 <Link href={"/about"}>
                   <h1 className="text-xl font-semibold">Mythra</h1>
                 </Link>
@@ -48,7 +48,7 @@ export default async function RootLayout({
                 </div>
               </div>
             </div>
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto px-2">
               {!isAuthenticated || !user ? <Whitepaper /> : children}
             </div>
           </div>
