@@ -5,12 +5,12 @@
 .radial-gradient {
   position: absolute;
 
-  width: 100%;
+  width: 100dvw;
   height: 100%;
   top: 0;
   left: 0;
 
-  background-image: radial-gradient(#28292e 1px, transparent 0);
+  background-image: radial-gradient(#e0e0e0 1px, transparent 0);
   background-size: 7px 7px;
   background-position: -8.5px -8.5px;
 

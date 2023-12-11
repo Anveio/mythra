@@ -13,7 +13,7 @@ export const Codeblock = (props: Props) => {
   return (
     <div
       className={cn(
-        "wrapper rounded-md max-w-lg mx-auto border-[1px] border-solid border-zinc-700",
+        "wrapper rounded-md max-w-4xl mx-auto border-[1px] border-solid border-zinc-700",
         props.className
       )}
     >
