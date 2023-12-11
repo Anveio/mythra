@@ -33,7 +33,7 @@ interface Protocol {
             }
         }
     },
-    baseUrl: `${string}`,
+    baseUrl: string,
 }
 
 /**
@@ -104,7 +104,7 @@ const AI_WEBSITES: Protocol[] = [
                 }
             }
         },
-        baseUrl: 'http://www.example-weather-app.com'
+        baseUrl: 'https://www.example-weather-app.com'
     }
 ]
 

@@ -43,7 +43,7 @@ export default function ChatBox() {
     handleInputChange,
     handleSubmit,
     isLoading,
-    setMessages,
+    setMessages
   } = useChat({
     initialInput: "What's the weather like in Seattle today?",
     api: "/api/ai/create-message",
@@ -106,6 +106,9 @@ export default function ChatBox() {
       }
     }
   }
+
+  console.log("consolidated: ", consolidatedMessages);
+
   return (
     <div className="flex flex-col w-full h-full">
       <div className="relative flex-1">
@@ -119,6 +122,7 @@ export default function ChatBox() {
           <div className="p-4 grid grid-cols-6 gap-3">
             <AnimatePresence>
               {consolidatedMessages.map((m) => {
+                console.log(m);
                 if (m.role === "assistant" || m.role === "system") {
                   return (
                     <AssistantMessage
