@@ -225,7 +225,7 @@ export const WeatherWidget = (props: Props) => {
                 {unitsOfMeasurement.speed} {windSpeed.direction}
               </h2>
             </div>
-            <div className="p-2 space-x-2">
+            {/* <div className="p-2 space-x-2">
               <div className="flex-col">
                 <Select>
                   <SelectTrigger className="w-[240px]">
@@ -293,7 +293,7 @@ export const WeatherWidget = (props: Props) => {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
+            </div> */}
           </div>
         </Card>
       </motion.div>
