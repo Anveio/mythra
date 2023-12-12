@@ -42,17 +42,17 @@ export const Whitepaper = () => {
                 use the website via HTTP. To allow language models to learn
                 about a website, we propose a convention where website authors
                 host a /mythra.txt file at the website root which serves a text
-                file adhering to the protol.
+                file adhering to the protocol.
               </p>
               <p>
                 We predict that language model developers will curate a
-                selection of high quality website API descriptions and that in
-                the future most interactions humans have with the internet will
-                be mediated through chats with language models. The language
-                model interface will become both browser and a search engine
-                through the latent space of available HTTP API definitions that
-                the language model was trained on. We call this latent space
-                Mythra.
+                selection of high quality website API descriptions for trusted
+                websites and that in the future most interactions humans have
+                with the internet will be mediated through chats with language
+                models. The language model interface will become both the
+                browser and a search engine through the latent space of
+                available HTTP API definitions that the language model was
+                trained on. We call this latent space Mythra.
               </p>
             </section>
             <section className="space-y-3">
