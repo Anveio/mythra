@@ -20,41 +20,73 @@ export const Whitepaper = () => {
               HTTP request strings.
             </p>
             <section className="space-y-3">
-              <h3 className="font-semibold text-2xl">Problem</h3>
+              <h3 className="font-semibold text-2xl">Abstract</h3>
               <p>
                 This page proposes a new capability for LLMs to embed live
-                websites into chats by having the LLM generate HTTP requests to
-                any well-described HTTP API.
+                websites into chats with language models instructing the
+                language model generate HTTP requests as text. We demonstrate
+                that ChatGPT can, without pretraining, be instructed to make
+                HTTP requests to websites relevant to a user's query and respond
+                normally otherwise. We believe this generalizes to other
+                language models.
               </p>
+              <p>
+                The user's browser will use the HTTP request text output by the
+                language model to perform a real HTTP request and render the
+                returned HTML, CSS, and JavaScript as a functional website
+                seamlessly within the chat window.
+              </p>
+              <p>
+                We also propose a protocol for website authors to describe their
+                API in a way that facilitates language models learning how to
+                use the website via HTTP. To allow language models to learn
+                about a website, we propose a convention where website authors
+                host a /mythra.txt file at the website root which serves a text
+                file adhering to the protol.
+              </p>
+              <p>
+                We predict that language model developers will curate a
+                selection of high quality website API descriptions and that in
+                the future most interactions humans have with the internet will
+                be mediated through chats with language models. The language
+                model interface will become both browser and a search engine
+                through the latent space of available HTTP API definitions that
+                the language model was trained on. We call this latent space
+                Mythra.
+              </p>
+            </section>
+            <section className="space-y-3">
+              <h3 className="font-semibold text-2xl">Problem</h3>
               <p>
                 For this proposal we worked backwards from an ideal state where
                 users could use websites with language. Websites are great
                 specialized tools for particular problems and LLMs are great
                 general tools for natural language conversations. But websites
-                require learning their interface for every new website you visit
-                and every new problem you have, and language models only return
-                text, which is very limiting as a problem solving tool.
+                require learning a specialized interface for every new website
+                you visit and every new problem you have, and language models
+                only return text, which is very limiting as a problem solving
+                tool.
               </p>
               <p>
                 A few attempts have been made to bridge this gap but they've
-                been lack luster. ChatGPT Plugins exist, such as for wolfram
-                alpha, but to use a plugin requires developing a completely new
-                application designed for OpenAI specifically, and that
-                application has to be approved by OpenAI and then the user has
-                to install the plugin and then enable it for their chat session.
+                been lackluster. ChatGPT Plugins exist, such as for Wolfram
+                Aalpha, but to use a plugin requires developing a completely new
+                application designed for OpenAI specifically, the application
+                then has to be approved by OpenAI, and the user has to then
+                install the plugin and then enable it for their chat session.
                 The number of barriers to entry are so high that plugins are
                 used by less than 1% of ChatGPT users. Even with plugins
                 installed the best ChatGPT can do is generate an image or text
-                of the output from the plugin, which isn't a compelling
-                experience.
+                of the output from the plugin, which doesn't create desired side
+                effects like opening a bank acount, booking a flight, or filing
+                taxes.
               </p>
               <p>
-                A second iteration was browsing for ChatGPT, but it still has
-                the same problem of only returning a static image or text, not
-                an interface you can continue to interact with using natural
-                language, in addition to other problems like not storing
+                A second iteration was Browsing for ChatGPT, but it has the same
+                problem of only returning a static image or text and not an
+                interface you can continue to interact with using natural
+                language in addition to other problems like not storing
                 preferences or sessions the way websites would do with cookies.
-                You'll never be able to do your taxes with ChatGPT Browsing.
               </p>
             </section>
             <section className="space-y-3">
