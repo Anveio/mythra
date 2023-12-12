@@ -32,8 +32,8 @@ export const Whitepaper = () => {
                 specialized tools for particular problems and LLMs are great
                 general tools for natural language conversations. But websites
                 require learning their interface for every new website you visit
-                and every new problem you have, and language models always ever
-                return text, which is very limiting as a problem solving tool.
+                and every new problem you have, and language models only return
+                text, which is very limiting as a problem solving tool.
               </p>
               <p>
                 A few attempts have been made to bridge this gap but they've
