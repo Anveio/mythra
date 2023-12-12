@@ -34,7 +34,7 @@ export const Whitepaper = () => {
                 The user's browser will use the output HTTP request text to
                 perform a real HTTP request and render the returned HTML, CSS,
                 and JavaScript as a functional website seamlessly within the
-                chat window.
+                chat window. We call this process "summoning".
               </p>
               <p>
                 We also propose a protocol for website authors to describe their
