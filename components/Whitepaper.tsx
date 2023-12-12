@@ -22,19 +22,19 @@ export const Whitepaper = () => {
             <section className="space-y-3">
               <h3 className="font-semibold text-2xl">Abstract</h3>
               <p>
-                This page proposes a new capability for LLMs to embed live
-                websites into chats with language models instructing the
-                language model generate HTTP requests as text. We demonstrate
-                that ChatGPT can, without pretraining, be instructed to make
-                HTTP requests to websites relevant to a user's query and respond
-                normally otherwise. We believe this generalizes to other
-                language models.
+                This page proposes a new capability for large language models
+                (LLMs) to embed live websites into chats with language models by
+                instructing the language model generate HTTP requests as text.
+                We demonstrate that ChatGPT can, without pretraining, be
+                instructed to output HTTP requests to websites relevant to a
+                user's query and respond normally otherwise. We believe this
+                generalizes to other language models.
               </p>
               <p>
-                The user's browser will use the HTTP request text output by the
-                language model to perform a real HTTP request and render the
-                returned HTML, CSS, and JavaScript as a functional website
-                seamlessly within the chat window.
+                The user's browser will use the output HTTP request text to
+                perform a real HTTP request and render the returned HTML, CSS,
+                and JavaScript as a functional website seamlessly within the
+                chat window.
               </p>
               <p>
                 We also propose a protocol for website authors to describe their
