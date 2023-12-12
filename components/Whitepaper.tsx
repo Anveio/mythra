@@ -16,7 +16,7 @@ export const Whitepaper = () => {
                 -ruh), (noun),
               </span>{" "}
               is the concept of a latent space of available internet resources
-              that LLMs can request by turning natural lenguage queries into
+              that LLMs can request by turning natural language queries into
               HTTP request strings.
             </p>
             <section className="space-y-3">
