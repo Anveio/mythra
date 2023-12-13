@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Codeblock } from "./Codeblock/Codeblock";
 
 export const Whitepaper = () => {
@@ -7,6 +8,23 @@ export const Whitepaper = () => {
         <h2 className="text-4xl font-semibold text-center">
           Infinite problems, infinite apps.
         </h2>
+        <p className="italic text-center">
+          <Link
+            href="https://twitter.com/anveio"
+            className="text-blue-600 dark:text-blue-500 hover:underline"
+            target="_blank"
+          >
+            Shovon Hasan
+          </Link>
+          ,{" "}
+          <Link
+            href={"https://twitter.com/reallynaise"}
+            className="text-blue-600 dark:text-blue-500 hover:underline"
+            target="_blank"
+          >
+            Renaise Kim
+          </Link>
+        </p>
         <div className="my-4"></div>
         <main>
           <div className="text-lg space-y-6 break-words">
@@ -23,15 +41,15 @@ export const Whitepaper = () => {
               <h3 className="font-semibold text-2xl">Abstract</h3>
               <p>
                 This page proposes a new capability for large language models
-                (LLMs) to embed live websites into chats with language models by
-                instructing the language model generate HTTP requests as text.
-                We demonstrate that ChatGPT can, without pretraining, be
-                instructed to output HTTP requests to websites relevant to a
-                user's query and respond normally otherwise. We believe this
-                generalizes to other language models.
+                (LLMs) to embed live websites into chats by instructing the
+                model to generate HTTP requests as text. We demonstrate that
+                ChatGPT can, without pretraining, be instructed to output HTTP
+                requests to websites relevant to a user's query and respond
+                normally otherwise. We believe this generalizes to other
+                language models.
               </p>
               <p>
-                The user's browser will use the output HTTP request text to
+                The clie browser will use the output HTTP request text to
                 perform a real HTTP request and render the returned HTML, CSS,
                 and JavaScript as a functional website seamlessly within the
                 chat window. We call this process "summoning".
@@ -58,32 +76,29 @@ export const Whitepaper = () => {
             <section className="space-y-3">
               <h3 className="font-semibold text-2xl">Problem</h3>
               <p>
-                For this proposal we worked backwards from an ideal state where
-                users could use websites with language. Websites are great
-                specialized tools for particular problems and LLMs are great
-                general tools for natural language conversations. But websites
-                require learning a specialized interface for every new website
-                you visit and every new problem you have, and language models
-                only return text, which is very limiting as a problem solving
-                tool.
+                Websites are great specialized tools for particular problems and
+                LLMs are great general tools for natural language conversations.
+                But websites require learning a specialized interface for every
+                new website you visit and every new problem you have, and
+                language models only return text, which is very limiting as a
+                problem solving tool.
               </p>
               <p>
                 A few attempts have been made to bridge this gap but they've
-                been lackluster. ChatGPT Plugins exist, such as for Wolfram
-                Aalpha, but to use a plugin requires developing a completely new
-                application designed for OpenAI specifically, the application
-                then has to be approved by OpenAI, and the user has to then
-                install the plugin and then enable it for their chat session.
-                The number of barriers to entry are so high that plugins are
-                used by less than 1% of ChatGPT users. Even with plugins
-                installed the best ChatGPT can do is generate an image or text
-                of the output from the plugin, which doesn't create desired side
-                effects like opening a bank acount, booking a flight, or filing
-                taxes.
+                been lackluster. ChatGPT Plugins, such as for Wolfram Aalpha,
+                requires developers to write a new application designed
+                specifically for OpenAI. The application then has to be approved
+                by OpenAI,and the user has to then install the plugin and then
+                enable it for their chat session. The number of barriers to
+                entry are so high that plugins are used by less than 1% of
+                ChatGPT users. Even with plugins installed the best ChatGPT can
+                do is generate an image or text as the output of the plugin,
+                which doesn't create desired side effects like opening a bank
+                acount, booking a flight, or filing taxes.
               </p>
               <p>
                 A second iteration was Browsing for ChatGPT, but it has the same
-                problem of only returning a static image or text and not an
+                problem of only returning a static image or text and is not an
                 interface you can continue to interact with using natural
                 language in addition to other problems like not storing
                 preferences or sessions the way websites would do with cookies.
