@@ -49,7 +49,7 @@ export const Whitepaper = () => {
                 language models.
               </p>
               <p>
-                The clie browser will use the output HTTP request text to
+                The client browser will use the output HTTP request text to
                 perform a real HTTP request and render the returned HTML, CSS,
                 and JavaScript as a functional website seamlessly within the
                 chat window. We call this process "summoning".
