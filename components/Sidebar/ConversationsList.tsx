@@ -2,22 +2,13 @@
 
 import { useConversationsStore } from "@/lib/conversations-state";
 import Link from "next/link";
+import React from "react";
 
-interface Props {
-  isSignedIn: boolean;
-}
-
-export function ConversationsList(props: Props) {
+export default function ConversationsList() {
   const { conversations, setCurrentConversationId } = useConversationsStore();
 
-  console.log(conversations, "conversations");
-
-  if (!props.isSignedIn) {
-    return null;
-  }
-
   return (
-    <ul className="pb-3 pl-5 pt-1 text-white">
+    <ul className="pb-3 pt-1 text-white">
       {Object.entries(conversations).map(([id, messages]) => (
         <li key={id}>
           <Link

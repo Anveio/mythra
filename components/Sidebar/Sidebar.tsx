@@ -1,54 +1,33 @@
 import { getUser } from "@/lib/auth";
 import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
 import { SignedIn } from "../SignedIn";
-import { ConversationsList } from "./ConversationsList";
 import { MobileSidebar } from "./MobileSidebar";
-import { ProfileButton } from "./ProfileButton";
-import { Button } from "../ui/button";
 import { NewConversationButton } from "./NewConversationButton";
+import { ProfileButton } from "./ProfileButton";
+import dynamic from "next/dynamic";
+
+const DynamicConversationsList = dynamic(
+  () => import("./ConversationsList").then((mod) => mod.default),
+  {
+    ssr: false,
+  }
+);
 
 export function Sidebar() {
-  return (
-    <div>
-      <MobileSidebar>
-        <SidebarCore shouldGenerateConversationTitles={false} />
-      </MobileSidebar>
-      <SidebarCore
-        shouldGenerateConversationTitles={true}
-        className="hidden md:flex"
-      />
-    </div>
-  );
+  return <SidebarCore />;
 }
 
-interface Props {
-  shouldGenerateConversationTitles: boolean;
-  className?: string;
-  closeOnNavChange?: boolean;
-}
-
-async function SidebarCore(props: Props) {
+async function SidebarCore() {
   const { user } = await getUser();
 
   return (
-    <div
-      className={clsx(
-        "fixed top-0 z-40 flex h-[100dvh] w-[15rem] flex-col bg-gray-900",
-        props.className
-      )}
-    >
+    <div className={clsx("z-40 flex-col bg-gray-900 hidden md:flex")}>
       <div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 pb-4 ring-1 ring-white/10">
         <nav className="flex flex-1 flex-col">
           <SignedIn>
             <NewConversationButton />
           </SignedIn>
-          <ul role="list" className="flex flex-1 flex-col gap-y-0">
-            <li>
-              <ConversationsList isSignedIn={!!user} />
-            </li>
-          </ul>
+          <DynamicConversationsList />
         </nav>
       </div>
 

@@ -53,8 +53,6 @@ export default function ChatBox() {
         : [],
   });
 
-  console.log(currentConversationId);
-
   const latestStreamedMessage = isLoading ? messages.at(-1)?.content : null;
 
   React.useEffect(() => {
@@ -121,13 +119,11 @@ export default function ChatBox() {
     }
   }
 
-  console.log("consolidated: ", consolidatedMessages);
-
   return (
-    <div className="flex flex-col w-full h-full min-h-[calc(100dvh-56px)] static">
+    <div className="flex flex-col w-full static h-full">
       <div className="relative flex-1">
         {messages.length === 0 && !isLoading ? (
-          <div className="flex flex-col h-screen items-center justify-center">
+          <div className="flex flex-col h-full items-center justify-center">
             <div className="mb-5 text-2xl font-medium text-center">
               How can I help you today?
             </div>
