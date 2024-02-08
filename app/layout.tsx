@@ -22,13 +22,7 @@ export default async function RootLayout({
       lang="en"
       className="bg-white dark:bg-gray-950 text-black dark:text-white"
     >
-      <body
-        className={cn(
-          GeistSans.variable,
-          GeistSans.className,
-          "h-screen max-h-screen overflow-y-hidden"
-        )}
-      >
+      <body className={cn(GeistSans.variable, GeistSans.className, "h-screen")}>
         {children}
         <Toaster />
       </body>
