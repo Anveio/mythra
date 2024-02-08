@@ -4,7 +4,9 @@ import Link from "next/link";
 export async function StartChatButton() {
   return (
     <Button asChild>
-      <Link href={"/chat"}>Chat</Link>
+      <Link prefetch href={"/chat"}>
+        Chat
+      </Link>
     </Button>
   );
 }
