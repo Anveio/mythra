@@ -19,7 +19,7 @@ export const NewConversationButton = () => {
         onClick={() => {
           const id = nanoid();
           createConversation(id);
-          window.history.pushState({}, "", `?c=${id}`);
+          window.history.pushState({}, "", `/chat?c=${id}`);
           setCurrentConversationId(id);
         }}
       >

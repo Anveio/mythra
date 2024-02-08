@@ -122,9 +122,9 @@ export const WeatherWidget = (props: Props) => {
         transition={{
           duration: 1,
         }}
-        className="col-span-6 w-full"
+        className="col-span-6 w-full "
       >
-        <Card ref={cardElementRef}>
+        <Card ref={cardElementRef} className="pb-6">
           <CardHeader>
             <div className="grid gap-3 grid-cols-[48px_48px_1fr]">
               <Button

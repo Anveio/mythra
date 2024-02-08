@@ -17,11 +17,11 @@ export default async function ChatPage({ params }: Props) {
       <div
         className={cn(
           "relative",
-          "md:grid md:grid-cols-[15rem_1fr] min-h-screen"
+          "md:grid md:grid-cols-[15rem_1fr] min-h-screen max-h-screen overflow-y-hidden"
         )}
       >
         <Sidebar />
-        <div>
+        <div className="h-full max-h-screen overflow-y-hidden">
           <div className="border-b-1 border-b shadow-sm">
             <div className="max-w-4xl h-14 mx-auto flex py-4 justify-between items-center">
               <Link href={"/"}>

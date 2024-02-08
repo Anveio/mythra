@@ -16,7 +16,7 @@ export default function ConversationsList() {
             onClick={() => {
               setCurrentConversationId(id);
             }}
-            href={`/?c=${id}`}
+            href={`/chat?c=${id}`}
           >
             <span className="truncate-non">
               {messages && messages[0]
