@@ -17,7 +17,7 @@ export default async function ChatPage({ params }: Props) {
       <div
         className={cn(
           "relative",
-          "md:grid md:grid-cols-[15rem_1fr] min-h-screen max-h-screen overflow-y-hidden"
+          "md:grid md:grid-cols-[15rem_1fr] h-screen min-h-screen max-h-screen overflow-y-hidden"
         )}
       >
         <Sidebar />
