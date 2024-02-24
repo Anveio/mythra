@@ -22,7 +22,7 @@ export default async function ChatPage({ params }: Props) {
       >
         <Sidebar />
         <div className="h-full max-h-screen overflow-y-hidden">
-          <div className="border-b-1 border-b shadow-sm">
+          <div className="border-b-1 border-b shadow-sm px-4 sm:px-0">
             <div className="max-w-4xl h-14 mx-auto flex py-4 justify-between items-center">
               <Link href={"/"}>
                 <h1 className="text-xl font-semibold">Mythra</h1>
