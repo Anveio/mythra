@@ -1,6 +1,5 @@
 // Import the base CSS styles for the radix-ui components.
 import { Toaster } from "@/components/ui/toaster";
-import { getUser } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -15,8 +14,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, user } = await getUser();
-
   return (
     <html
       lang="en"
